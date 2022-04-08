@@ -16,9 +16,14 @@ namespace Practice___Two
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment environment)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder().SetBasePath(environment.ContentRootPath)
+            .AddJsonFile("appsettings.json", reloadOnChange: true, optional: false)
+            .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", reloadOnChange: true, optional: false)
+            .AddEnvironmentVariables();
+     
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -28,23 +33,44 @@ namespace Practice___Two
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Practice___Two", Version = "v1" });
+                var groupName = "V1.0";
+
+                options.SwaggerDoc(groupName, new OpenApiInfo
+                {
+                    Title = $"{Configuration.GetSection("Application").GetSection("Tittle").Value} {groupName}",
+                    Version = groupName,
+                    Description = "Practica 2",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Douglas Company",
+                        Email = string.Empty,
+                        Url = new Uri("https://MyfirstWA.com/"),
+                    }
+                });
             });
+
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Practice___Two v1"));
+                app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Practice-Two v1"));
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "My first webApi V1.0");
+            });
 
             app.UseRouting();
 
