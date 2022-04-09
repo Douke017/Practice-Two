@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,11 +17,12 @@ namespace Practice___Two
 {
     public class Startup
     {
-        public Startup(IWebHostEnvironment environment)
+        public Startup(IWebHostEnvironment env)
         {
-            var builder = new ConfigurationBuilder().SetBasePath(environment.ContentRootPath)
-            .AddJsonFile("appsettings.json", reloadOnChange: true, optional: false)
-            .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", reloadOnChange: true, optional: false)
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(env.ContentRootPath)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true)
             .AddEnvironmentVariables();
      
             Configuration = builder.Build();
@@ -28,12 +30,10 @@ namespace Practice___Two
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddControllers();
-
             services.AddSwaggerGen(options =>
             {
                 var groupName = "V1.0";
@@ -60,8 +60,6 @@ namespace Practice___Two
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Practice-Two v1"));
             }
 
             app.UseHttpsRedirection();

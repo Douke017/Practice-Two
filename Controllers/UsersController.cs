@@ -12,7 +12,7 @@ namespace Practice___Two.Controllers
     public class UsersController : ControllerBase
     {
         [HttpGet]
-        public IActionResult CreateUsers()
+        public IActionResult GetUsers()
         {
             return Ok();
         }

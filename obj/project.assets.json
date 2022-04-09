@@ -189,6 +189,16 @@
             "rid": "win"
           }
         }
+      },
+      "Logic/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/Logic.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Logic.dll": {}
+        }
       }
     }
   },
@@ -521,10 +531,16 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "Logic/1.0.0": {
+      "type": "project",
+      "path": "../Logic/Logic.csproj",
+      "msbuildProject": "../Logic/Logic.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "Logic >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.3.0",
       "Swashbuckle.AspNetCore.Swagger >= 6.3.0",
       "Swashbuckle.AspNetCore.SwaggerGen >= 6.3.0",
@@ -558,7 +574,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "E:\\UCB\\Logic\\Logic.csproj": {
+              "projectPath": "E:\\UCB\\Logic\\Logic.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
